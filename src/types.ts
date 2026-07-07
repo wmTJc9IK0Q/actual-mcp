@@ -59,6 +59,23 @@ export const MonthlySummaryArgsSchema = z.object({
 
 export type MonthlySummaryArgs = z.infer<typeof MonthlySummaryArgsSchema>;
 
+export const MonthlyBudgetsArgsSchema = z.object({
+  startMonth: z
+    .string()
+    .regex(/^\d{4}-\d{2}$/, 'startMonth must be in YYYY-MM format')
+    .optional()
+    .describe('Inclusive start of the month range in YYYY-MM format. Defaults to the current month.'),
+  endMonth: z
+    .string()
+    .regex(/^\d{4}-\d{2}$/, 'endMonth must be in YYYY-MM format')
+    .optional()
+    .describe(
+      'Inclusive end of the month range in YYYY-MM format. Defaults to the current month (or startMonth when only startMonth is given).'
+    ),
+});
+
+export type MonthlyBudgetsArgs = z.infer<typeof MonthlyBudgetsArgsSchema>;
+
 export const BalanceHistoryArgsSchema = z.object({
   accountId: z.string(),
   includeOffBudget: z.boolean().optional().default(false),

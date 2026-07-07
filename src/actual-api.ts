@@ -120,6 +120,26 @@ export async function getPayees(): Promise<APIPayeeEntity[]> {
 }
 
 /**
+ * Get the list of months that have budget data, as YYYY-MM strings (ensures API is initialized)
+ */
+export async function getBudgetMonths(): Promise<string[]> {
+  await initActualApi();
+  return api.getBudgetMonths();
+}
+
+/**
+ * Get the budget for a single month, including per-category budgeted/spent/balance
+ * figures grouped by category group (ensures API is initialized).
+ *
+ * @param month - The month to fetch in YYYY-MM format
+ * @returns The month's budget totals and category groups
+ */
+export async function getBudgetMonth(month: string): Promise<Awaited<ReturnType<typeof api.getBudgetMonth>>> {
+  await initActualApi();
+  return api.getBudgetMonth(month);
+}
+
+/**
  * Get transactions for a specific account and date range (ensures API is initialized)
  */
 export async function getTransactions(accountId: string, start: string, end: string): Promise<TransactionEntity[]> {

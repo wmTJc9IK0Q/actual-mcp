@@ -28,6 +28,7 @@ The Actual Budget MCP Server allows you to interact with your personal financial
 
 - **`spending-by-category`** - Generate spending breakdowns categorized by type
 - **`monthly-summary`** - Get monthly income, expenses, and savings metrics
+- **`get-monthly-budgets`** - Get budgeted, spent, and balance amounts per category (grouped by category group) for each month in a `YYYY-MM` range
 
 #### Categories
 

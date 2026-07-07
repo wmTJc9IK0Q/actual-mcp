@@ -50,3 +50,35 @@ export function getDateRangeForMonths(months: number): {
     end: end.toISOString().slice(0, 10),
   };
 }
+
+/**
+ * Get the current month as a YYYY-MM string.
+ */
+export function getCurrentMonth(): string {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+}
+
+/**
+ * Enumerate every month (inclusive) between two YYYY-MM strings.
+ *
+ * @param startMonth - Inclusive start month in YYYY-MM format
+ * @param endMonth - Inclusive end month in YYYY-MM format
+ * @returns Ordered list of YYYY-MM strings from start to end. Empty if start is after end.
+ */
+export function enumerateMonths(startMonth: string, endMonth: string): string[] {
+  const [startYear, startMon] = startMonth.split('-').map(Number);
+  const [endYear, endMon] = endMonth.split('-').map(Number);
+  const months: string[] = [];
+  let year = startYear;
+  let month = startMon;
+  while (year < endYear || (year === endYear && month <= endMon)) {
+    months.push(`${year}-${String(month).padStart(2, '0')}`);
+    month += 1;
+    if (month > 12) {
+      month = 1;
+      year += 1;
+    }
+  }
+  return months;
+}

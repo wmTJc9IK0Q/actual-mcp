@@ -16,6 +16,7 @@ import * as getGroupedCategories from './categories/get-grouped-categories/index
 import * as updateCategoryGroup from './categories/update-category-group/index.js';
 import * as updateCategory from './categories/update-category/index.js';
 import * as getAccounts from './get-accounts/index.js';
+import * as getMonthlyBudgets from './get-monthly-budgets/index.js';
 import * as getTransactions from './get-transactions/index.js';
 import * as monthlySummary from './monthly-summary/index.js';
 import * as createPayee from './payees/create-payee/index.js';
@@ -37,6 +38,7 @@ const readTools = [
   getTransactions,
   spendingByCategory,
   monthlySummary,
+  getMonthlyBudgets,
   balanceHistory,
   getAccounts,
   getGroupedCategories,
