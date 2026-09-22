@@ -40,6 +40,11 @@ The Actual Budget MCP Server allows you to interact with your personal financial
 - **`update-category-group`** - Update a category group's name
 - **`delete-category-group`** - Delete a category group
 
+#### Budget Templates
+
+- **`apply-budget-templates`** - Run the budget templates for all categories in a month (`YYYY-MM`, defaults to current), filling only categories with no budgeted amount
+- **`overwrite-budget-templates`** - Run the budget templates for all categories in a month, replacing existing budgeted amounts
+
 #### Payees
 
 - **`get-payees`** - Retrieve a list of all payees with their details

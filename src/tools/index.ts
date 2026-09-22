@@ -33,6 +33,8 @@ import * as updateTransaction from './update-transaction/index.js';
 import * as createTransaction from './create-transaction/index.js';
 import * as importTransactions from './import-transactions/index.js';
 import * as runBankSync from './run-bank-sync/index.js';
+import * as applyBudgetTemplates from './budget-templates/apply-budget-templates/index.js';
+import * as overwriteBudgetTemplates from './budget-templates/overwrite-budget-templates/index.js';
 
 const readTools = [
   getTransactions,
@@ -64,6 +66,8 @@ const writeTools = [
   createTransaction,
   importTransactions,
   runBankSync,
+  applyBudgetTemplates,
+  overwriteBudgetTemplates,
 ];
 
 export const setupTools = (server: Server, enableWrite: boolean): void => {

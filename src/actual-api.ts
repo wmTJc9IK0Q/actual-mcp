@@ -13,6 +13,26 @@ const DEFAULT_DATA_DIR: string = path.resolve(os.homedir() || '.', '.actual');
 let initialized = false;
 let initializing = false;
 let initializationError: Error | null = null;
+// Reason: budget templates are only reachable via internal handlers; `api.init` returns the internal lib exposing `send`.
+let internalSend: BudgetTemplateSend | null = null;
+
+/** Internal handlers used to run budget templates for a whole month. */
+type BudgetTemplateHandler = 'budget/apply-goal-template' | 'budget/overwrite-goal-template';
+
+/** Narrow view of the internal `send` function covering only the handlers this module calls. */
+type BudgetTemplateSend = (name: BudgetTemplateHandler, args: { month: string }) => Promise<BudgetTemplateResult>;
+
+/**
+ * Result notification returned by Actual's budget template handlers.
+ * `pre` carries template parse errors (one block per failing category).
+ */
+export interface BudgetTemplateResult {
+  type?: 'message' | 'error' | 'warning';
+  pre?: string;
+  title?: string;
+  message: string;
+  sticky?: boolean;
+}
 
 /**
  * Initialize the Actual Budget API
@@ -39,7 +59,7 @@ export async function initActualApi(): Promise<void> {
     const password = process.env.ACTUAL_PASSWORD;
     // Reason: InitConfig is a discriminated union in 26.x — NoServerConfig forbids serverURL/password
     const initConfig = serverURL ? { dataDir, serverURL, password: password ?? '' } : { dataDir };
-    await api.init(initConfig);
+    internalSend = (await api.init(initConfig)).send;
 
     const budgets: BudgetFile[] = await api.getBudgets();
     if (!budgets || budgets.length === 0) {
@@ -80,6 +100,7 @@ export async function shutdownActualApi(): Promise<void> {
     console.error('Error shutting down Actual Budget API:', err);
   } finally {
     initialized = false;
+    internalSend = null;
   }
 }
 
@@ -323,4 +344,39 @@ export async function runBankSync(accountId?: string): Promise<void> {
   await initActualApi();
   // API expects { accountId } object or undefined for all accounts
   return api.runBankSync(accountId ? { accountId } : undefined);
+}
+
+/**
+ * Get the internal `send` function, ensuring the API is initialized.
+ */
+async function getInternalSend(): Promise<BudgetTemplateSend> {
+  await initActualApi();
+  if (!internalSend) {
+    throw new Error('Actual Budget internal API is not available');
+  }
+  return internalSend;
+}
+
+/**
+ * Apply budget templates for every category in a month, only filling categories
+ * that have no budgeted amount yet (matches Actual's "Apply budget template").
+ *
+ * @param month - Month in YYYY-MM format
+ * @returns Actual's result notification
+ */
+export async function applyBudgetTemplates(month: string): Promise<BudgetTemplateResult> {
+  const send = await getInternalSend();
+  return send('budget/apply-goal-template', { month });
+}
+
+/**
+ * Apply budget templates for every category in a month, replacing any existing
+ * budgeted amounts (matches Actual's "Overwrite with budget template").
+ *
+ * @param month - Month in YYYY-MM format
+ * @returns Actual's result notification
+ */
+export async function overwriteBudgetTemplates(month: string): Promise<BudgetTemplateResult> {
+  const send = await getInternalSend();
+  return send('budget/overwrite-goal-template', { month });
 }
