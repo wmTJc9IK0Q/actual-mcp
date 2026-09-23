@@ -40,6 +40,16 @@ The Actual Budget MCP Server allows you to interact with your personal financial
 - **`update-category-group`** - Update a category group's name
 - **`delete-category-group`** - Delete a category group
 
+#### Budget Amounts
+
+All take an optional `month` (`YYYY-MM`, defaults to the current month) and amounts in cents.
+
+- **`set-budget-amount`** - Set a category's budgeted amount to a new total
+- **`add-budget-amount`** - Add money to a category from "To Budget" (fails if not enough is available)
+- **`subtract-budget-amount`** - Return money from a category to "To Budget" (up to its available balance)
+- **`transfer-budget-amount`** - Move budgeted money from one category to another
+- **`cover-overspending`** - Cover an overspent category from another category's available balance (full overspending by default)
+
 #### Budget Templates
 
 - **`apply-budget-templates`** - Run the budget templates for all categories in a month (`YYYY-MM`, defaults to current), filling only categories with no budgeted amount

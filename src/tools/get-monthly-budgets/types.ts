@@ -29,6 +29,8 @@ export interface BudgetCategoryGroup {
 
 export interface BudgetMonth {
   month: string;
+  /** Envelope budgeting "To Budget" amount (not meaningful for tracking budgets). */
+  toBudget: number;
   totalBudgeted: number;
   totalSpent: number;
   totalBalance: number;

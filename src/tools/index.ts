@@ -35,6 +35,11 @@ import * as importTransactions from './import-transactions/index.js';
 import * as runBankSync from './run-bank-sync/index.js';
 import * as applyBudgetTemplates from './budget-templates/apply-budget-templates/index.js';
 import * as overwriteBudgetTemplates from './budget-templates/overwrite-budget-templates/index.js';
+import * as setBudgetAmount from './budget-amounts/set-budget-amount/index.js';
+import * as addBudgetAmount from './budget-amounts/add-budget-amount/index.js';
+import * as subtractBudgetAmount from './budget-amounts/subtract-budget-amount/index.js';
+import * as transferBudgetAmount from './budget-amounts/transfer-budget-amount/index.js';
+import * as coverOverspending from './budget-amounts/cover-overspending/index.js';
 
 const readTools = [
   getTransactions,
@@ -68,6 +73,11 @@ const writeTools = [
   runBankSync,
   applyBudgetTemplates,
   overwriteBudgetTemplates,
+  setBudgetAmount,
+  addBudgetAmount,
+  subtractBudgetAmount,
+  transferBudgetAmount,
+  coverOverspending,
 ];
 
 export const setupTools = (server: Server, enableWrite: boolean): void => {

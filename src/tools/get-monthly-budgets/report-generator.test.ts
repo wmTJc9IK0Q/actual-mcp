@@ -9,6 +9,7 @@ describe('MonthlyBudgetsReportGenerator', () => {
     const months: BudgetMonth[] = [
       {
         month: '2026-01',
+        toBudget: 0,
         totalBudgeted: 80000,
         totalSpent: 80030,
         totalBalance: -30,
@@ -41,6 +42,7 @@ describe('MonthlyBudgetsReportGenerator', () => {
     const months: BudgetMonth[] = [
       {
         month: '2026-02',
+        toBudget: 0,
         totalBudgeted: 0,
         totalSpent: 0,
         totalBalance: 10000,

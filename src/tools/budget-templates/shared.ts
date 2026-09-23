@@ -7,13 +7,10 @@ import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { success, error } from '../../utils/response.js';
 import { getCurrentMonth } from '../../utils.js';
 import type { BudgetTemplateResult } from '../../actual-api.js';
+import { OptionalMonthSchema } from '../../core/input/validators.js';
 
 export const BudgetTemplatesArgsSchema = z.object({
-  month: z
-    .string()
-    .regex(/^\d{4}-\d{2}$/, 'month must be in YYYY-MM format')
-    .optional()
-    .describe('Month to run the budget templates for, in YYYY-MM format. Defaults to the current month.'),
+  month: OptionalMonthSchema,
 });
 
 export type BudgetTemplatesArgs = z.infer<typeof BudgetTemplatesArgsSchema>;

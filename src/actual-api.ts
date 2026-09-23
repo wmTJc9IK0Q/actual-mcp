@@ -13,14 +13,32 @@ const DEFAULT_DATA_DIR: string = path.resolve(os.homedir() || '.', '.actual');
 let initialized = false;
 let initializing = false;
 let initializationError: Error | null = null;
-// Reason: budget templates are only reachable via internal handlers; `api.init` returns the internal lib exposing `send`.
-let internalSend: BudgetTemplateSend | null = null;
+// Reason: budget templates and budget transfers are only reachable via internal handlers;
+// `api.init` returns the internal lib exposing `send`.
+let internalSend: InternalSend | null = null;
 
-/** Internal handlers used to run budget templates for a whole month. */
-type BudgetTemplateHandler = 'budget/apply-goal-template' | 'budget/overwrite-goal-template';
+/** Special budget target meaning Actual's "To Budget" pool. */
+export const TO_BUDGET = 'to-budget';
 
-/** Narrow view of the internal `send` function covering only the handlers this module calls. */
-type BudgetTemplateSend = (name: BudgetTemplateHandler, args: { month: string }) => Promise<BudgetTemplateResult>;
+/**
+ * Narrow view of the internal `send` function covering only the handlers this module calls.
+ * Amounts are integers in cents.
+ */
+interface InternalSend {
+  (
+    name: 'budget/apply-goal-template' | 'budget/overwrite-goal-template',
+    args: { month: string }
+  ): Promise<BudgetTemplateResult>;
+  (name: 'budget/transfer-available', args: { month: string; amount: number; category: string }): Promise<void>;
+  (
+    name: 'budget/transfer-category',
+    args: { month: string; amount: number; from: string; to: string; currencyCode: string }
+  ): Promise<void>;
+  (
+    name: 'budget/cover-overspending',
+    args: { month: string; to: string; from: string; amount?: number; currencyCode: string }
+  ): Promise<void>;
+}
 
 /**
  * Result notification returned by Actual's budget template handlers.
@@ -349,7 +367,7 @@ export async function runBankSync(accountId?: string): Promise<void> {
 /**
  * Get the internal `send` function, ensuring the API is initialized.
  */
-async function getInternalSend(): Promise<BudgetTemplateSend> {
+async function getInternalSend(): Promise<InternalSend> {
   await initActualApi();
   if (!internalSend) {
     throw new Error('Actual Budget internal API is not available');
@@ -379,4 +397,92 @@ export async function applyBudgetTemplates(month: string): Promise<BudgetTemplat
 export async function overwriteBudgetTemplates(month: string): Promise<BudgetTemplateResult> {
   const send = await getInternalSend();
   return send('budget/overwrite-goal-template', { month });
+}
+
+/**
+ * Set a category's budgeted amount for a month to an exact value (ensures API is initialized).
+ *
+ * @param month - Month in YYYY-MM format
+ * @param categoryId - Category to update
+ * @param amount - New budgeted amount in cents
+ */
+export async function setBudgetAmount(month: string, categoryId: string, amount: number): Promise<void> {
+  await initActualApi();
+  return api.setBudgetAmount(month, categoryId, amount);
+}
+
+/**
+ * Move money from "To Budget" into a category (Actual's "Transfer from To Budget").
+ * Actual clamps the amount to what is available in "To Budget".
+ *
+ * @param month - Month in YYYY-MM format
+ * @param categoryId - Category receiving the money
+ * @param amount - Amount in cents
+ */
+export async function addBudgetFromToBudget(month: string, categoryId: string, amount: number): Promise<void> {
+  const send = await getInternalSend();
+  return send('budget/transfer-available', { month, amount, category: categoryId });
+}
+
+/**
+ * Move budgeted money out of a category into another category or back to "To Budget".
+ * Actual records the movement in the month's budget notes.
+ *
+ * @param month - Month in YYYY-MM format
+ * @param amount - Amount in cents
+ * @param fromCategoryId - Category giving up the money
+ * @param to - Receiving category ID, or TO_BUDGET
+ */
+export async function transferBudgetAmount(
+  month: string,
+  amount: number,
+  fromCategoryId: string,
+  to: string
+): Promise<void> {
+  const send = await getInternalSend();
+  return send('budget/transfer-category', {
+    month,
+    amount,
+    from: fromCategoryId,
+    to,
+    currencyCode: await getDefaultCurrencyCode(),
+  });
+}
+
+/**
+ * Cover a category's overspending using another category's available balance.
+ * Actual caps the covered amount at the source category's balance and records it in the budget notes.
+ *
+ * @param month - Month in YYYY-MM format
+ * @param toCategoryId - Overspent category to cover
+ * @param fromCategoryId - Category providing the money
+ * @param amount - Amount to cover in cents; omit to cover the full overspending
+ */
+export async function coverOverspending(
+  month: string,
+  toCategoryId: string,
+  fromCategoryId: string,
+  amount?: number
+): Promise<void> {
+  const send = await getInternalSend();
+  return send('budget/cover-overspending', {
+    month,
+    to: toCategoryId,
+    from: fromCategoryId,
+    amount,
+    currencyCode: await getDefaultCurrencyCode(),
+  });
+}
+
+/**
+ * Read the budget's default currency code preference ('' when unset), which Actual
+ * uses to format amounts in budget movement notes.
+ */
+async function getDefaultCurrencyCode(): Promise<string> {
+  const result = await api.aqlQuery(api.q('preferences').filter({ id: 'defaultCurrencyCode' }).select(['value']));
+  if (result && typeof result === 'object' && 'data' in result && Array.isArray(result.data)) {
+    const value: unknown = result.data[0]?.value;
+    if (typeof value === 'string') return value;
+  }
+  return '';
 }
