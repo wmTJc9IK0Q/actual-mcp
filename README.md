@@ -69,6 +69,11 @@ All take an optional `month` (`YYYY-MM`, defaults to the current month) and amou
 - **`update-rule`** - Update an existing transaction rule
 - **`delete-rule`** - Delete a transaction rule
 
+#### Notes
+
+- **`get-note`** - Read the note on a category or account (by `id`), or a month's budget notes (by `month`, `YYYY-MM`), where Actual logs budget transfers
+- **`update-note`** - Replace, or append to (`append: true`), the note on a category, account, or budget month. Category notes hold budget template lines such as `#template 100`
+
 ### Prompts
 
 - **`financial-insights`** - Generate insights and recommendations based on your financial data

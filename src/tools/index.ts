@@ -40,6 +40,8 @@ import * as addBudgetAmount from './budget-amounts/add-budget-amount/index.js';
 import * as subtractBudgetAmount from './budget-amounts/subtract-budget-amount/index.js';
 import * as transferBudgetAmount from './budget-amounts/transfer-budget-amount/index.js';
 import * as coverOverspending from './budget-amounts/cover-overspending/index.js';
+import * as getNote from './notes/get-note/index.js';
+import * as updateNote from './notes/update-note/index.js';
 
 const readTools = [
   getTransactions,
@@ -51,6 +53,7 @@ const readTools = [
   getGroupedCategories,
   getPayees,
   getRules,
+  getNote,
 ];
 
 const writeTools = [
@@ -78,6 +81,7 @@ const writeTools = [
   subtractBudgetAmount,
   transferBudgetAmount,
   coverOverspending,
+  updateNote,
 ];
 
 export const setupTools = (server: Server, enableWrite: boolean): void => {
