@@ -35,9 +35,19 @@ export function parseMonth(args: unknown): string {
  * @returns Success or error tool response
  */
 export function toToolResult(month: string, result: BudgetTemplateResult): CallToolResult {
-  const text = result.pre ? `${result.message}\n\n${result.pre}` : result.message;
+  const text = formatTemplateResult(result);
   if (result.type === 'error' || result.pre) {
     return error(`Budget templates for ${month}: ${text}`);
   }
   return success(`Budget templates for ${month}: ${text}`);
+}
+
+/**
+ * Render Actual's template notification as text: the message plus any `pre` details.
+ *
+ * @param result - Notification returned by Actual
+ * @returns Human-readable notification text
+ */
+export function formatTemplateResult(result: BudgetTemplateResult): string {
+  return result.pre ? `${result.message}\n\n${result.pre}` : result.message;
 }

@@ -39,3 +39,45 @@ export async function overwriteBudgetTemplates(month: string): Promise<BudgetTem
   const send = await getInternalSend();
   return send('budget/overwrite-goal-template', { month });
 }
+
+/**
+ * Check every category's `#template`/`#goal` note lines for syntax errors and
+ * references to missing schedules (matches Actual's "Check templates").
+ * Reason: Actual registers this handler as a mutator, but it only reads notes and
+ * schedules; nothing is stored.
+ *
+ * @returns Actual's result notification; `pre` lists the failing lines
+ */
+export async function checkBudgetTemplates(): Promise<BudgetTemplateResult> {
+  const send = await getInternalSend();
+  return send('budget/check-templates');
+}
+
+/**
+ * Apply budget templates for specific categories in a month, replacing their existing
+ * budgeted amounts (Actual always forces overwrite for this handler).
+ *
+ * @param month - Month in YYYY-MM format
+ * @param categoryIds - Categories whose templates should run
+ * @returns Actual's result notification
+ */
+export async function applyCategoryBudgetTemplates(
+  month: string,
+  categoryIds: string[]
+): Promise<BudgetTemplateResult> {
+  const send = await getInternalSend();
+  return send('budget/apply-multiple-templates', { month, categoryIds });
+}
+
+/**
+ * Run end-of-month cleanup (`#cleanup` note templates) for a month, matching Actual's
+ * "End of month cleanup": sources return leftover funds, overspending is covered, and
+ * sinks receive the remainder.
+ *
+ * @param month - Month in YYYY-MM format
+ * @returns Actual's result notification
+ */
+export async function cleanupBudgetTemplates(month: string): Promise<BudgetTemplateResult> {
+  const send = await getInternalSend();
+  return send('budget/cleanup-goal-template', { month });
+}

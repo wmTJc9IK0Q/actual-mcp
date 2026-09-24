@@ -67,6 +67,9 @@ All take an optional `month` (`YYYY-MM`, defaults to the current month) and amou
 
 - **`apply-budget-templates`** - Run the budget templates for all categories in a month (`YYYY-MM`, defaults to current), filling only categories with no budgeted amount
 - **`overwrite-budget-templates`** - Run the budget templates for all categories in a month, replacing existing budgeted amounts
+- **`check-budget-templates`** - Check the `#template`/`#goal` lines in category notes for syntax errors and references to missing schedules. Read-only
+- **`apply-category-budget-templates`** - Run budget templates for only the given `categoryIds` in a month, overwriting their budgeted amounts; other categories are untouched. Refuses to run if a selected category's template has a syntax error
+- **`cleanup-budget-templates`** - Run Actual's end-of-month cleanup from `#cleanup` note lines: `source` categories return leftover money, overspending is covered, and the rest of "To Budget" is split across `sink` categories by weight. Refuses to run while "To Budget" is negative
 
 #### Payees
 

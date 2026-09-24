@@ -35,6 +35,9 @@ import * as importTransactions from './import-transactions/index.js';
 import * as runBankSync from './run-bank-sync/index.js';
 import * as applyBudgetTemplates from './budget-templates/apply-budget-templates/index.js';
 import * as overwriteBudgetTemplates from './budget-templates/overwrite-budget-templates/index.js';
+import * as checkBudgetTemplates from './budget-templates/check-budget-templates/index.js';
+import * as applyCategoryBudgetTemplates from './budget-templates/apply-category-budget-templates/index.js';
+import * as cleanupBudgetTemplates from './budget-templates/cleanup-budget-templates/index.js';
 import * as setBudgetAmount from './budget-amounts/set-budget-amount/index.js';
 import * as addBudgetAmount from './budget-amounts/add-budget-amount/index.js';
 import * as subtractBudgetAmount from './budget-amounts/subtract-budget-amount/index.js';
@@ -76,6 +79,7 @@ const readTools = [
   getPayeeRules,
   getTags,
   runQuery,
+  checkBudgetTemplates,
 ];
 
 const writeTools = [
@@ -98,6 +102,8 @@ const writeTools = [
   runBankSync,
   applyBudgetTemplates,
   overwriteBudgetTemplates,
+  applyCategoryBudgetTemplates,
+  cleanupBudgetTemplates,
   setBudgetAmount,
   addBudgetAmount,
   subtractBudgetAmount,
