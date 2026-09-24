@@ -46,6 +46,13 @@ import * as getSchedules from './schedules/get-schedules/index.js';
 import * as createSchedule from './schedules/create-schedule/index.js';
 import * as updateSchedule from './schedules/update-schedule/index.js';
 import * as deleteSchedule from './schedules/delete-schedule/index.js';
+import * as copyPreviousMonthBudget from './budget-month/copy-previous-month-budget/index.js';
+import * as setBudgetToAverage from './budget-month/set-budget-to-average/index.js';
+import * as zeroBudgetMonth from './budget-month/zero-budget-month/index.js';
+import * as holdBudgetForNextMonth from './budget-month/hold-budget-for-next-month/index.js';
+import * as resetBudgetHold from './budget-month/reset-budget-hold/index.js';
+import * as setBudgetCarryover from './budget-month/set-budget-carryover/index.js';
+import * as coverOverbudgeted from './budget-month/cover-overbudgeted/index.js';
 
 const readTools = [
   getTransactions,
@@ -86,6 +93,13 @@ const writeTools = [
   subtractBudgetAmount,
   transferBudgetAmount,
   coverOverspending,
+  copyPreviousMonthBudget,
+  setBudgetToAverage,
+  zeroBudgetMonth,
+  holdBudgetForNextMonth,
+  resetBudgetHold,
+  setBudgetCarryover,
+  coverOverbudgeted,
   updateNote,
   createSchedule,
   updateSchedule,

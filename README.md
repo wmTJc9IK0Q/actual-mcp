@@ -50,6 +50,18 @@ All take an optional `month` (`YYYY-MM`, defaults to the current month) and amou
 - **`transfer-budget-amount`** - Move budgeted money from one category to another
 - **`cover-overspending`** - Cover an overspent category from another category's available balance (full overspending by default)
 
+#### Budget Month Operations
+
+All take an optional `month` (`YYYY-MM`, defaults to the current month) and amounts in cents.
+
+- **`copy-previous-month-budget`** - Copy last month's budgeted amounts into a month, for every visible category or one `categoryId`. Refuses to copy when nothing was budgeted last month
+- **`set-budget-to-average`** - Set budgeted amounts to average spending over the previous N months: one `categoryId` with any N, or every visible category with N of 3, 6, or 12
+- **`zero-budget-month`** - Set every category's budgeted amount in a month to zero
+- **`hold-budget-for-next-month`** - Hold part of a month's "To Budget" for next month (adds to any existing hold). Envelope budgets only
+- **`reset-budget-hold`** - Release money held for next month back into the month's "To Budget". Envelope budgets only
+- **`set-budget-carryover`** - Turn a category's rollover on or off, starting at a month and applying to every later month
+- **`cover-overbudgeted`** - When "To Budget" is negative, cover the shortfall from a category's available balance, in full or by `amount`. Envelope budgets only
+
 #### Budget Templates
 
 - **`apply-budget-templates`** - Run the budget templates for all categories in a month (`YYYY-MM`, defaults to current), filling only categories with no budgeted amount
