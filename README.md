@@ -74,6 +74,13 @@ All take an optional `month` (`YYYY-MM`, defaults to the current month) and amou
 - **`get-note`** - Read the note on a category or account (by `id`), or a month's budget notes (by `month`, `YYYY-MM`), where Actual logs budget transfers
 - **`update-note`** - Replace, or append to (`append: true`), the note on a category, account, or budget month. Category notes hold budget template lines such as `#template 100`
 
+#### Schedules
+
+- **`get-schedules`** - List scheduled transactions with next date, amount (exact, approximate, or range), account, payee, a plain-English recurrence description, auto-post setting, and completion status
+- **`create-schedule`** - Create a one-time or recurring schedule (daily/weekly/monthly/yearly with interval, end after N times or on a date, monthly day patterns, weekend handling). Amounts in cents, negative = payment; ranges use `isbetween`
+- **`update-schedule`** - Change a schedule's name, date/recurrence, amount/operator, account, payee, or auto-post setting; only the fields you send change, and `resetNextDate` recomputes the next date
+- **`delete-schedule`** - Delete a schedule and its underlying rule; transactions already created from it are kept
+
 ### Prompts
 
 - **`financial-insights`** - Generate insights and recommendations based on your financial data

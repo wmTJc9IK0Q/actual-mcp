@@ -42,6 +42,10 @@ import * as transferBudgetAmount from './budget-amounts/transfer-budget-amount/i
 import * as coverOverspending from './budget-amounts/cover-overspending/index.js';
 import * as getNote from './notes/get-note/index.js';
 import * as updateNote from './notes/update-note/index.js';
+import * as getSchedules from './schedules/get-schedules/index.js';
+import * as createSchedule from './schedules/create-schedule/index.js';
+import * as updateSchedule from './schedules/update-schedule/index.js';
+import * as deleteSchedule from './schedules/delete-schedule/index.js';
 
 const readTools = [
   getTransactions,
@@ -54,6 +58,7 @@ const readTools = [
   getPayees,
   getRules,
   getNote,
+  getSchedules,
 ];
 
 const writeTools = [
@@ -82,6 +87,9 @@ const writeTools = [
   transferBudgetAmount,
   coverOverspending,
   updateNote,
+  createSchedule,
+  updateSchedule,
+  deleteSchedule,
 ];
 
 export const setupTools = (server: Server, enableWrite: boolean): void => {
