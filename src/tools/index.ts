@@ -55,6 +55,10 @@ import * as setBudgetCarryover from './budget-month/set-budget-carryover/index.j
 import * as coverOverbudgeted from './budget-month/cover-overbudgeted/index.js';
 import * as mergePayees from './payees/merge-payees/index.js';
 import * as getPayeeRules from './payees/get-payee-rules/index.js';
+import * as getTags from './tags/get-tags/index.js';
+import * as createTag from './tags/create-tag/index.js';
+import * as updateTag from './tags/update-tag/index.js';
+import * as deleteTag from './tags/delete-tag/index.js';
 
 const readTools = [
   getTransactions,
@@ -69,6 +73,7 @@ const readTools = [
   getNote,
   getSchedules,
   getPayeeRules,
+  getTags,
 ];
 
 const writeTools = [
@@ -104,6 +109,9 @@ const writeTools = [
   setBudgetCarryover,
   coverOverbudgeted,
   mergePayees,
+  createTag,
+  updateTag,
+  deleteTag,
   updateNote,
   createSchedule,
   updateSchedule,

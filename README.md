@@ -76,6 +76,13 @@ All take an optional `month` (`YYYY-MM`, defaults to the current month) and amou
 - **`merge-payees`** - Merge one or more payees into a target payee; their transactions and rules move to the target and the merged payees are deleted. Transfer payees are rejected
 - **`get-payee-rules`** - List the rules that use a payee in a condition or a "set payee" action (same format as `get-rules`)
 
+#### Tags
+
+- **`get-tags`** - List all tags with ID, name, color, and description. Transactions are tagged by writing `#name` in their notes (edit with `update-transaction`)
+- **`create-tag`** - Create a tag with an optional hex color (`#RRGGBB`) and description. Rejects names with whitespace or `#`, and names that already exist
+- **`update-tag`** - Change a tag's name, color, or description; only the fields you pass change, and `null` clears color or description. Renaming does not rewrite `#old` in transaction notes
+- **`delete-tag`** - Delete a tag's metadata; transaction notes containing `#name` are left unchanged
+
 #### Rules
 
 - **`get-rules`** - Retrieve a list of all transaction rules
