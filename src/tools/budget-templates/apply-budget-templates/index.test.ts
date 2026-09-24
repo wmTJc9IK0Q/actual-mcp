@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { handler } from './index.js';
 import { textContent } from '../../../utils/response.js';
 
-vi.mock('../../../actual-api.js', () => ({
+vi.mock('../../../api/budget-templates.js', () => ({
   applyBudgetTemplates: vi.fn(),
 }));
 
@@ -10,7 +10,7 @@ vi.mock('../../../utils.js', () => ({
   getCurrentMonth: vi.fn(() => '2026-09'),
 }));
 
-import { applyBudgetTemplates } from '../../../actual-api.js';
+import { applyBudgetTemplates } from '../../../api/budget-templates.js';
 
 describe('apply-budget-templates tool', () => {
   beforeEach(() => {

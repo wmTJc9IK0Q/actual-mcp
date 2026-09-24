@@ -5,10 +5,14 @@ import { budgetMonth } from '../test-fixtures.js';
 
 vi.mock('../../../actual-api.js', () => ({
   getBudgetMonth: vi.fn(),
+}));
+
+vi.mock('../../../api/budget-amounts.js', () => ({
   coverOverspending: vi.fn(),
 }));
 
-import { getBudgetMonth, coverOverspending } from '../../../actual-api.js';
+import { getBudgetMonth } from '../../../actual-api.js';
+import { coverOverspending } from '../../../api/budget-amounts.js';
 
 const overspent = { id: 'cat-dining', name: 'Dining', budgeted: 0, balance: -3000 };
 const savings = { id: 'cat-save', name: 'Savings', budgeted: 10000, balance: 10000 };

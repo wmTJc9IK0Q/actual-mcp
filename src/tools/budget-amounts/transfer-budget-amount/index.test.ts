@@ -5,10 +5,14 @@ import { budgetMonth } from '../test-fixtures.js';
 
 vi.mock('../../../actual-api.js', () => ({
   getBudgetMonth: vi.fn(),
+}));
+
+vi.mock('../../../api/budget-amounts.js', () => ({
   transferBudgetAmount: vi.fn(),
 }));
 
-import { getBudgetMonth, transferBudgetAmount } from '../../../actual-api.js';
+import { getBudgetMonth } from '../../../actual-api.js';
+import { transferBudgetAmount } from '../../../api/budget-amounts.js';
 
 const food = { id: 'cat-food', name: 'Food', budgeted: 10000, balance: 10000 };
 const fun = { id: 'cat-fun', name: 'Fun', budgeted: 0, balance: 0 };

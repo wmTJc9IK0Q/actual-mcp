@@ -4,12 +4,16 @@ import { textContent } from '../../../utils/response.js';
 import { budgetMonth } from '../test-fixtures.js';
 
 vi.mock('../../../actual-api.js', () => ({
-  TO_BUDGET: 'to-budget',
   getBudgetMonth: vi.fn(),
+}));
+
+vi.mock('../../../api/budget-amounts.js', () => ({
+  TO_BUDGET: 'to-budget',
   transferBudgetAmount: vi.fn(),
 }));
 
-import { getBudgetMonth, transferBudgetAmount } from '../../../actual-api.js';
+import { getBudgetMonth } from '../../../actual-api.js';
+import { transferBudgetAmount } from '../../../api/budget-amounts.js';
 
 describe('subtract-budget-amount tool', () => {
   beforeEach(() => {

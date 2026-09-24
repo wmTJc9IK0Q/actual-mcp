@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { handler } from './index.js';
 import { textContent } from '../../../utils/response.js';
 
-vi.mock('../../../actual-api.js', () => ({
+vi.mock('../../../api/budget-templates.js', () => ({
   overwriteBudgetTemplates: vi.fn(),
 }));
 
-import { overwriteBudgetTemplates } from '../../../actual-api.js';
+import { overwriteBudgetTemplates } from '../../../api/budget-templates.js';
 
 describe('overwrite-budget-templates tool', () => {
   beforeEach(() => {

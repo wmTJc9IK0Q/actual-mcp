@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { success, error } from '../../utils/response.js';
 import { getCurrentMonth } from '../../utils.js';
-import type { BudgetTemplateResult } from '../../actual-api.js';
+import type { BudgetTemplateResult } from '../../api/budget-templates.js';
 import { OptionalMonthSchema } from '../../core/input/validators.js';
 
 export const BudgetTemplatesArgsSchema = z.object({

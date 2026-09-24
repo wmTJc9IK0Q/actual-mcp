@@ -5,7 +5,7 @@
 import { z, toJSONSchema } from 'zod';
 import { CallToolResult } from '@modelcontextprotocol/sdk/types.js';
 import { success, errorFromCatch } from '../../../utils/response.js';
-import { coverOverspending } from '../../../actual-api.js';
+import { coverOverspending } from '../../../api/budget-amounts.js';
 import { OptionalMonthSchema } from '../../../core/input/validators.js';
 import { formatAmount, getCurrentMonth } from '../../../utils.js';
 import type { ToolInput } from '../../../types.js';

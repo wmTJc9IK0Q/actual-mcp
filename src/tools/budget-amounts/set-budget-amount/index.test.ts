@@ -6,6 +6,9 @@ import type * as Utils from '../../../utils.js';
 
 vi.mock('../../../actual-api.js', () => ({
   getBudgetMonth: vi.fn(),
+}));
+
+vi.mock('../../../api/budget-amounts.js', () => ({
   setBudgetAmount: vi.fn(),
 }));
 
@@ -14,7 +17,8 @@ vi.mock('../../../utils.js', async (importOriginal) => ({
   getCurrentMonth: vi.fn(() => '2026-09'),
 }));
 
-import { getBudgetMonth, setBudgetAmount } from '../../../actual-api.js';
+import { getBudgetMonth } from '../../../actual-api.js';
+import { setBudgetAmount } from '../../../api/budget-amounts.js';
 
 describe('set-budget-amount tool', () => {
   beforeEach(() => {
