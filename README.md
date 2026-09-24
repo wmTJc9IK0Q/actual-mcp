@@ -29,6 +29,7 @@ The Actual Budget MCP Server allows you to interact with your personal financial
 - **`spending-by-category`** - Generate spending breakdowns categorized by type
 - **`monthly-summary`** - Get monthly income, expenses, and savings metrics
 - **`get-monthly-budgets`** - Get budgeted, spent, and balance amounts per category (grouped by category group) for each month in a `YYYY-MM` range
+- **`run-query`** - Run a read-only ActualQL query (filter, select, groupBy, orderBy, calculate, limit/offset, transaction splits mode) against transactions, accounts, categories, category groups, payees, schedules, rules, or notes. Supports joined fields like `category.name` and `$month` date transforms; amounts are in cents
 
 #### Categories
 

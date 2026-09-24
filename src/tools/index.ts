@@ -59,6 +59,7 @@ import * as getTags from './tags/get-tags/index.js';
 import * as createTag from './tags/create-tag/index.js';
 import * as updateTag from './tags/update-tag/index.js';
 import * as deleteTag from './tags/delete-tag/index.js';
+import * as runQuery from './run-query/index.js';
 
 const readTools = [
   getTransactions,
@@ -74,6 +75,7 @@ const readTools = [
   getSchedules,
   getPayeeRules,
   getTags,
+  runQuery,
 ];
 
 const writeTools = [
