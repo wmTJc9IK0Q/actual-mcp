@@ -53,6 +53,8 @@ import * as holdBudgetForNextMonth from './budget-month/hold-budget-for-next-mon
 import * as resetBudgetHold from './budget-month/reset-budget-hold/index.js';
 import * as setBudgetCarryover from './budget-month/set-budget-carryover/index.js';
 import * as coverOverbudgeted from './budget-month/cover-overbudgeted/index.js';
+import * as mergePayees from './payees/merge-payees/index.js';
+import * as getPayeeRules from './payees/get-payee-rules/index.js';
 
 const readTools = [
   getTransactions,
@@ -66,6 +68,7 @@ const readTools = [
   getRules,
   getNote,
   getSchedules,
+  getPayeeRules,
 ];
 
 const writeTools = [
@@ -100,6 +103,7 @@ const writeTools = [
   resetBudgetHold,
   setBudgetCarryover,
   coverOverbudgeted,
+  mergePayees,
   updateNote,
   createSchedule,
   updateSchedule,

@@ -73,6 +73,8 @@ All take an optional `month` (`YYYY-MM`, defaults to the current month) and amou
 - **`create-payee`** - Create a new payee
 - **`update-payee`** - Update an existing payee's details
 - **`delete-payee`** - Delete a payee
+- **`merge-payees`** - Merge one or more payees into a target payee; their transactions and rules move to the target and the merged payees are deleted. Transfer payees are rejected
+- **`get-payee-rules`** - List the rules that use a payee in a condition or a "set payee" action (same format as `get-rules`)
 
 #### Rules
 
