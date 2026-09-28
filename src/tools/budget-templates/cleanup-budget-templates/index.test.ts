@@ -41,7 +41,9 @@ describe('cleanup-budget-templates tool', () => {
       );
     vi.mocked(cleanupBudgetTemplates).mockResolvedValue({
       type: 'message',
-      message: 'Successfully returned funds from 1 source and funded 1 sinking fund.',
+      message: 'cleanup-applied',
+      sourceCount: 1,
+      sinkCount: 1,
     });
 
     const result = await handler({ month: '2026-08' });
@@ -49,7 +51,7 @@ describe('cleanup-budget-templates tool', () => {
     expect(cleanupBudgetTemplates).toHaveBeenCalledWith('2026-08');
     expect(result.isError).toBeFalsy();
     const text = textContent(result.content[0]);
-    expect(text).toContain('Successfully returned funds');
+    expect(text).toContain('Returned funds from 1 sources and funded 1 sinking funds.');
     expect(text).toContain('Leftover: budgeted $50.00 → $20.00');
     expect(text).toContain('Savings: budgeted $10.00 → $60.00');
     expect(text).toContain('To Budget: $20.00 → $0.00');
@@ -60,7 +62,7 @@ describe('cleanup-budget-templates tool', () => {
     vi.mocked(getBudgetMonth).mockResolvedValue(budgetMonth(0, [leftover, savings]));
     vi.mocked(cleanupBudgetTemplates).mockResolvedValue({
       type: 'message',
-      message: 'All categories were up to date.',
+      message: 'cleanup-up-to-date',
     });
 
     const result = await handler({});
@@ -76,7 +78,7 @@ describe('cleanup-budget-templates tool', () => {
       .mockResolvedValueOnce(budgetMonth(0, [leftover, { ...savings, budgeted: 1500, balance: 1500 }]));
     vi.mocked(cleanupBudgetTemplates).mockResolvedValue({
       type: 'warning',
-      message: 'Global: Funds not available:',
+      message: 'cleanup-no-funds',
       pre: 'Dining does not have available funds.',
     });
 
@@ -91,9 +93,9 @@ describe('cleanup-budget-templates tool', () => {
   it('reports an error notification from Actual as a tool error', async () => {
     vi.mocked(getBudgetMonth).mockResolvedValue(budgetMonth(0, [leftover]));
     vi.mocked(cleanupBudgetTemplates).mockResolvedValue({
-      type: 'error',
+      // Reason: Actual 26.9 marks cleanup template errors only by message key, not `type: 'error'`.
       sticky: true,
-      message: 'There were errors interpreting some templates:',
+      message: 'template-errors',
       pre: 'Leftover: bad cleanup line',
     });
 

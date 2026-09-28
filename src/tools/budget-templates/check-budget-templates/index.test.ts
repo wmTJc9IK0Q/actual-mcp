@@ -14,7 +14,7 @@ describe('check-budget-templates tool', () => {
   });
 
   it('confirms when every template is valid', async () => {
-    vi.mocked(checkBudgetTemplates).mockResolvedValue({ type: 'message', message: 'All templates passed! 🎉' });
+    vi.mocked(checkBudgetTemplates).mockResolvedValue({ type: 'message', message: 'templates-check-passed' });
 
     const result = await handler();
 
@@ -25,7 +25,7 @@ describe('check-budget-templates tool', () => {
   it('lists every failing template line', async () => {
     vi.mocked(checkBudgetTemplates).mockResolvedValue({
       sticky: true,
-      message: 'There were errors interpreting some templates:',
+      message: 'template-errors',
       pre: 'Broken: #template garbage words\n\nBills: Schedule "Rent" does not exist',
     });
 

@@ -49,5 +49,39 @@ export function toToolResult(month: string, result: BudgetTemplateResult): CallT
  * @returns Human-readable notification text
  */
 export function formatTemplateResult(result: BudgetTemplateResult): string {
-  return result.pre ? `${result.message}\n\n${result.pre}` : result.message;
+  const message = describeTemplateMessage(result);
+  return result.pre ? `${message}\n\n${result.pre}` : message;
+}
+
+/**
+ * Turn Actual's notification message into a sentence.
+ * Reason: since Actual 26.9 the message is a translation key for the web UI (e.g. `templates-applied`
+ * with `count`). Unknown keys and older servers' plain sentences are returned unchanged.
+ *
+ * @param result - Notification returned by Actual
+ * @returns Human-readable message
+ */
+function describeTemplateMessage(result: BudgetTemplateResult): string {
+  const sources = result.sourceCount ?? 0;
+  const sinks = result.sinkCount ?? 0;
+  switch (result.message) {
+    case 'templates-applied':
+      return `Applied templates to ${result.count ?? 0} categories.`;
+    case 'templates-up-to-date':
+      return 'Everything is up to date.';
+    case 'templates-check-passed':
+      return 'All templates passed.';
+    case 'template-errors':
+      return 'There were errors interpreting some templates:';
+    case 'cleanup-applied':
+      return `Returned funds from ${sources} sources and funded ${sinks} sinking funds.`;
+    case 'cleanup-applied-with-errors':
+      return `Returned funds from ${sources} sources and funded ${sinks} sinking funds, with errors:`;
+    case 'cleanup-up-to-date':
+      return 'All categories were up to date.';
+    case 'cleanup-no-funds':
+      return 'Cleanup could not fully complete:';
+    default:
+      return result.message;
+  }
 }

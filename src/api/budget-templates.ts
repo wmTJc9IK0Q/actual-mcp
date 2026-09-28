@@ -6,7 +6,8 @@ import { getInternalSend } from '../actual-api.js';
 
 /**
  * Result notification returned by Actual's budget template handlers.
- * `pre` carries template parse errors (one block per failing category).
+ * Since Actual 26.9, `message` is a translation key (e.g. `templates-applied`) with the numbers
+ * in `count`/`sourceCount`/`sinkCount`; `pre` carries template errors or cleanup warnings.
  */
 export interface BudgetTemplateResult {
   type?: 'message' | 'error' | 'warning';
@@ -14,6 +15,12 @@ export interface BudgetTemplateResult {
   title?: string;
   message: string;
   sticky?: boolean;
+  /** Categories the templates were applied to (`templates-applied`). */
+  count?: number;
+  /** Cleanup source categories that returned funds (`cleanup-applied*`). */
+  sourceCount?: number;
+  /** Cleanup sink categories that were funded (`cleanup-applied*`). */
+  sinkCount?: number;
 }
 
 /**

@@ -20,7 +20,8 @@ describe('apply-budget-templates tool', () => {
   it('applies templates for the requested month', async () => {
     vi.mocked(applyBudgetTemplates).mockResolvedValue({
       type: 'message',
-      message: 'Successfully applied templates to 4 categories',
+      message: 'templates-applied',
+      count: 4,
     });
 
     const result = await handler({ month: '2026-10' });
@@ -32,7 +33,7 @@ describe('apply-budget-templates tool', () => {
   });
 
   it('defaults to the current month when month is omitted', async () => {
-    vi.mocked(applyBudgetTemplates).mockResolvedValue({ type: 'message', message: 'Everything is up to date' });
+    vi.mocked(applyBudgetTemplates).mockResolvedValue({ type: 'message', message: 'templates-up-to-date' });
 
     await handler({});
 
@@ -42,7 +43,7 @@ describe('apply-budget-templates tool', () => {
   it('reports template parse errors as a tool error with details', async () => {
     vi.mocked(applyBudgetTemplates).mockResolvedValue({
       sticky: true,
-      message: 'There were errors interpreting some templates:',
+      message: 'template-errors',
       pre: 'Groceries: Expected amount',
     });
 

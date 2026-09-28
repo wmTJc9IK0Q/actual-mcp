@@ -35,7 +35,7 @@ describe('apply-category-budget-templates tool', () => {
       { id: 'cat-food', name: 'Food', group_id: 'grp-expense' },
       { id: 'cat-broken', name: 'Broken', group_id: 'grp-expense' },
     ]);
-    vi.mocked(checkBudgetTemplates).mockResolvedValue({ type: 'message', message: 'All templates passed!' });
+    vi.mocked(checkBudgetTemplates).mockResolvedValue({ type: 'message', message: 'templates-check-passed' });
   });
 
   it('overwrites only the selected categories and reports their before/after', async () => {
@@ -44,7 +44,8 @@ describe('apply-category-budget-templates tool', () => {
       .mockResolvedValueOnce(budgetMonth(145555, [{ ...rent, budgeted: 10000, balance: 10000 }, food]));
     vi.mocked(applyCategoryBudgetTemplates).mockResolvedValue({
       type: 'message',
-      message: 'Successfully applied templates to 1 categories',
+      message: 'templates-applied',
+      count: 1,
     });
 
     const result = await handler({ categoryIds: ['cat-rent', 'cat-rent'], month: '2026-10' });
@@ -58,7 +59,7 @@ describe('apply-category-budget-templates tool', () => {
 
   it('defaults to the current month', async () => {
     vi.mocked(getBudgetMonth).mockResolvedValue(budgetMonth(0, [rent]));
-    vi.mocked(applyCategoryBudgetTemplates).mockResolvedValue({ type: 'message', message: 'Everything is up to date' });
+    vi.mocked(applyCategoryBudgetTemplates).mockResolvedValue({ type: 'message', message: 'templates-up-to-date' });
 
     await handler({ categoryIds: ['cat-rent'] });
 
@@ -85,7 +86,7 @@ describe('apply-category-budget-templates tool', () => {
   it('refuses to apply when a selected category has a template syntax error', async () => {
     vi.mocked(checkBudgetTemplates).mockResolvedValue({
       sticky: true,
-      message: 'There were errors interpreting some templates:',
+      message: 'template-errors',
       pre: 'Broken: #template garbage words\n\nOther: #template nonsense',
     });
 
@@ -101,11 +102,11 @@ describe('apply-category-budget-templates tool', () => {
   it('ignores template errors in categories that were not selected', async () => {
     vi.mocked(checkBudgetTemplates).mockResolvedValue({
       sticky: true,
-      message: 'There were errors interpreting some templates:',
+      message: 'template-errors',
       pre: 'Broken: #template garbage words',
     });
     vi.mocked(getBudgetMonth).mockResolvedValue(budgetMonth(0, [rent, broken]));
-    vi.mocked(applyCategoryBudgetTemplates).mockResolvedValue({ type: 'message', message: 'Everything is up to date' });
+    vi.mocked(applyCategoryBudgetTemplates).mockResolvedValue({ type: 'message', message: 'templates-up-to-date' });
 
     const result = await handler({ categoryIds: ['cat-rent'], month: '2026-09' });
 
@@ -117,7 +118,7 @@ describe('apply-category-budget-templates tool', () => {
     vi.mocked(getBudgetMonth).mockResolvedValue(budgetMonth(0, [rent]));
     vi.mocked(applyCategoryBudgetTemplates).mockResolvedValue({
       sticky: true,
-      message: 'There were errors interpreting some templates:',
+      message: 'template-errors',
       pre: 'Rent: Schedule "Lease" does not exist',
     });
 

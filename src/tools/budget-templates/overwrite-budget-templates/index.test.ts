@@ -12,13 +12,14 @@ import { checkBudgetTemplates, overwriteBudgetTemplates } from '../../../api/bud
 describe('overwrite-budget-templates tool', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.mocked(checkBudgetTemplates).mockResolvedValue({ type: 'message', message: 'All templates passed!' });
+    vi.mocked(checkBudgetTemplates).mockResolvedValue({ type: 'message', message: 'templates-check-passed' });
   });
 
   it('overwrites budgets with templates for the requested month', async () => {
     vi.mocked(overwriteBudgetTemplates).mockResolvedValue({
       type: 'message',
-      message: 'Successfully applied templates to 12 categories',
+      message: 'templates-applied',
+      count: 12,
     });
 
     const result = await handler({ month: '2026-11' });
@@ -40,7 +41,7 @@ describe('overwrite-budget-templates tool', () => {
   it('refuses to overwrite when any template has a syntax error', async () => {
     vi.mocked(checkBudgetTemplates).mockResolvedValue({
       sticky: true,
-      message: 'There were errors interpreting some templates:',
+      message: 'template-errors',
       pre: 'Broken: #template garbage words',
     });
 

@@ -47,8 +47,9 @@ export async function handler(args: BudgetTemplatesArgs): Promise<CallToolResult
     }
     const result = await cleanupBudgetTemplates(month);
     // Reason: cleanup reports warnings (e.g. a source with no funds) in `pre` alongside a partial
-    // success, so only a real error notification is treated as a failure.
-    if (result.type === 'error') return toToolResult(month, result);
+    // success, so only real errors are failures. Actual 26.9 marks template errors only by the
+    // `template-errors` key, without `type: 'error'`.
+    if (result.type === 'error' || result.message === 'template-errors') return toToolResult(month, result);
 
     const after = await loadMonthBudget(month);
     const changedIds = [...after.categories.values()]
