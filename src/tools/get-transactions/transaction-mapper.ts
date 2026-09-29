@@ -1,6 +1,7 @@
 // Maps and formats transaction data for get-transactions tool
 import { formatAmount, formatDate } from '../../utils.js';
 import type { Transaction } from '../../types.js';
+import { displayCategoryLabel } from '../../core/mapping/transaction-mapper.js';
 
 export class GetTransactionsMapper {
   map(transactions: Transaction[]): Array<{
@@ -17,7 +18,7 @@ export class GetTransactionsMapper {
       id: t.id,
       date: formatDate(t.date),
       payee: t.payee_name || t.payee || '(No payee)',
-      category: t.category_name || t.category || '(Uncategorized)',
+      category: displayCategoryLabel(t) ?? (t.category_name || t.category || '(Uncategorized)'),
       amount: formatAmount(t.amount),
       notes: t.notes || '',
       cleared: t.cleared ?? false,

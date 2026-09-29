@@ -11,7 +11,8 @@ import { toJSONSchema } from 'zod';
 
 export const schema = {
   name: 'get-transactions',
-  description: 'Get transactions for an account with optional filtering',
+  description:
+    'Get transactions for an account with optional filtering. Split parents show category "**SPLIT" and transfers show "**TRANSFER" (virtual labels, not real categories).',
   inputSchema: toJSONSchema(GetTransactionsArgsSchema) as ToolInput,
 };
 

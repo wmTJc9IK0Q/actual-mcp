@@ -11,6 +11,8 @@ import { Account, Transaction } from './types.js';
 import { formatAmount, formatDate, getDateRange } from './utils.js';
 import { initActualApi, shutdownActualApi } from './actual-api.js';
 import { fetchAllAccounts } from './core/data/fetch-accounts.js';
+import { fetchTransactionsForAccount } from './core/data/fetch-transactions.js';
+import { displayCategoryLabel } from './core/mapping/transaction-mapper.js';
 
 export const setupResources = (server: Server): void => {
   /**
@@ -119,7 +121,7 @@ To view transactions for this account, use the get-transactions tool.`;
       if (pathParts.length === 2 && pathParts[1] === 'transactions' && url.hostname === 'accounts') {
         const accountId: string = pathParts[0];
         const { startDate, endDate } = getDateRange();
-        const transactions: Transaction[] = await api.getTransactions(accountId, startDate, endDate);
+        const transactions: Transaction[] = await fetchTransactionsForAccount(accountId, startDate, endDate);
 
         if (!transactions || transactions.length === 0) {
           return {
@@ -140,7 +142,7 @@ To view transactions for this account, use the get-transactions tool.`;
             const amount: string = formatAmount(t.amount);
             const date: string = formatDate(t.date);
             const payee: string = t.payee_name || '(No payee)';
-            const category: string = t.category_name || '(Uncategorized)';
+            const category: string = displayCategoryLabel(t) ?? (t.category_name || '(Uncategorized)');
             const notes: string = t.notes || '';
 
             return `| ${date} | ${payee} | ${category} | ${amount} | ${notes} |`;

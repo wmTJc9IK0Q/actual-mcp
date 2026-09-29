@@ -25,8 +25,15 @@ describe('get-transactions tool - uncategorized filter', () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { id: 'parent-1', account: 'acc-1', date: '2024-05-01', amount: -3000, is_parent: true } as any,
       // A categorized child split.
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { id: 'child-1', account: 'acc-1', date: '2024-05-01', amount: -3000, is_child: true, category: 'cat-dining' } as any,
+
+      {
+        id: 'child-1',
+        account: 'acc-1',
+        date: '2024-05-01',
+        amount: -3000,
+        is_child: true,
+        category: 'cat-dining',
+      } as any,
       // A genuinely uncategorized plain transaction.
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { id: 'plain-1', account: 'acc-1', date: '2024-05-02', amount: -1000, payee: null } as any,

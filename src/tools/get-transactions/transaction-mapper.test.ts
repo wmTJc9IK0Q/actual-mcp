@@ -53,4 +53,32 @@ describe('GetTransactionsMapper', () => {
     expect(mapped.cleared).toBe(false);
     expect(mapped.transferId).toBe('');
   });
+
+  it('reports split parents as **SPLIT instead of uncategorized', () => {
+    const tx: Transaction = {
+      id: 'parent-1',
+      account: 'acc-1',
+      date: '2024-05-01',
+      amount: -3000,
+      is_parent: true,
+    };
+
+    const [mapped] = mapper.map([tx]);
+
+    expect(mapped.category).toBe('**SPLIT');
+  });
+
+  it('reports transfers as **TRANSFER instead of uncategorized', () => {
+    const tx: Transaction = {
+      id: 'transfer-1',
+      account: 'acc-1',
+      date: '2024-05-01',
+      amount: -5000,
+      transfer_id: 'tx-other',
+    };
+
+    const [mapped] = mapper.map([tx]);
+
+    expect(mapped.category).toBe('**TRANSFER');
+  });
 });
